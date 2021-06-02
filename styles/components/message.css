@@ -1,0 +1,29 @@
+.message-card-section {
+  background-color: orchid;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8em 1em 0.8em 1.5em;
+  border-radius: 0.8em;
+  align-items: center;
+}
+
+.message-text {
+  font-size: 1.2em;
+}
+
+.hide-section {
+  height: 2em;
+  width: 2em;
+  background-color: rgba(255, 166, 0, 0.637);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5em;
+  margin-left: 2em;
+  cursor: pointer;
+}
+
+.hide-section > svg {
+  height: 0.8em;
+  width: 0.8em;
+}

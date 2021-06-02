@@ -9,7 +9,7 @@ interface IMessageCard {
 export const MessageCard: FC<IMessageCard> = ({ message, onClose }) => {
   return (
     <>
-      <div className="message-card-secion">
+      <div className="message-card-section">
         <div className="message-section">
           <h1 className="message-text">Currency alrady exist</h1>
         </div>

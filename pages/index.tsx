@@ -7,6 +7,8 @@ import { nanoid } from "nanoid";
 import { Input } from "../components/input";
 import { Button } from "../components/button";
 import { Card } from "../components/card";
+import { MessageCard } from "../components/message";
+
 interface ITodo {
   id: string;
   text: string;
@@ -35,7 +37,7 @@ const Home = () => {
         setData(data.rates);
       }
     }
-  }, []);
+  }, [data]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -67,10 +69,12 @@ const Home = () => {
     }
   };
 
+  const messageCloseHandel = () => {};
+
   return (
     <div>
       <Head>
-        <title>Iconic Todo</title>
+        <title>Iconic Currency | Home</title>
         <meta name="description" content="Iconic Todo" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -117,7 +121,7 @@ const Home = () => {
           </div>
         </div>
         <div className="messages-section">
-          
+          <MessageCard message="" onClose={messageCloseHandel} />
         </div>
       </main>
     </div>
