@@ -1,7 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useQuery, gql } from "@apollo/client";
 import { nanoid } from "nanoid";
+import { client } from "./_app";
+import { useQuery } from "@apollo/client";
+import { TODOS_GQL } from "../gql/todos";
 
 // component
 import { Input } from "../components/input";
@@ -13,108 +15,55 @@ interface ITodo {
   id: string;
   text: string;
 }
-const EXCHANGE_RATES = gql`
-  query GetExchangeRates {
-    rates(currency: "USD") {
-      currency
-      rate
-    }
-  }
-`;
 
 const Home = () => {
   const [Data, setData] = useState([]);
-  const [currency, setCurrency] = useState("");
-  const [rate, setRate] = useState("");
+  const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
 
-  const { loading, error, data } = useQuery(EXCHANGE_RATES);
+  const {
+    data: todosData,
+    loading: todosLoading,
+    error: todosError,
+  } = useQuery(TODOS_GQL);
 
   useEffect(() => {
-    if (data?.rates) {
-      if (data.rates.length >= 20) {
-        setData(data.rates.slice(0, 20));
-      } else {
-        setData(data.rates);
-      }
+    if (todosData?.todos) {
+      setData(todosData.todos);
     }
-  }, [data]);
+  }, [todosData]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (todosLoading) return <h1>Loding...</h1>;
+  if (todosError) return <h1>Error :[ </h1>;
 
-  const currencyValueChangeHandel = (e: any): void => {
+  const valueChangeHandel = (e: any): void => {
     const val: string = e.target.value;
-    setCurrency(val);
+    setValue(val);
   };
 
-  const rateValueChangeHandel = (e: any): void => {
-    const val: string = e.target.value;
-    setRate(val);
-  };
+  const editClickHandel = (id: string) => {};
 
-  const editClickHandel = (currency: string) => {};
-
-  const removeClickHandel = (currency: string) => {};
+  const removeClickHandel = (id: string) => {};
 
   const addHandel = (e: any) => {
     e.preventDefault();
 
-    if (currency?.trim() === "") {
+    if (value?.trim() === "") {
       setMessages((preMessage) => {
         return [
           ...preMessage,
           {
             id: nanoid(),
-            message: "Currency can't be empty",
+            message: "Todo can't be empty",
           },
         ];
       });
       return;
     }
 
-    if (rate?.trim() === "") {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Rate can't be empty",
-          },
-        ];
-      });
-      return;
-    }
-
-    const findCurrency = Data?.find((fc) => {
-      return fc.currency === currency;
-    });
-
-    if (!+rate) {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Rate Must be number",
-          },
-        ];
-      });
-      return;
-    }
-
-    if (!findCurrency) {
-    } else {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Currency already exist",
-          },
-        ];
-      });
-    }
+    // setCurrency("");
+    // setRate("");
+    // setMessages([]);
   };
 
   const messageCloseHandel = (id: string) => {
@@ -138,23 +87,16 @@ const Home = () => {
       <main className="app-main-section">
         <div className="app-section">
           <div className="heading-section">
-            <h1 className="top-heading">Add currency</h1>
+            <h1 className="top-heading">Add todo</h1>
           </div>
 
           <div className="add-input-section">
             <form className="form-add" onSubmit={addHandel}>
               <Input
-                value={currency}
-                inputName="currency"
-                placeHolder={"currency"}
-                onChange={currencyValueChangeHandel}
-              />
-
-              <Input
-                value={rate}
-                inputName="rate"
-                placeHolder={"rate"}
-                onChange={rateValueChangeHandel}
+                value={value}
+                inputName="value"
+                placeHolder={"Add what's in your mind"}
+                onChange={valueChangeHandel}
               />
               <Button buttonName="add" />
             </form>
@@ -162,13 +104,14 @@ const Home = () => {
 
           <div className="cards-section">
             <div className="tc-heading-section">
-              <h1 className="tc-heading">Top currency</h1>
+              <h1 className="tc-heading">Added todo</h1>
             </div>
             {Data?.map((val, i) => {
               return (
                 <Card
                   key={i}
                   props={val}
+                  count={i}
                   onEditClick={editClickHandel}
                   onRemoveClick={removeClickHandel}
                 />
@@ -176,6 +119,7 @@ const Home = () => {
             })}
           </div>
         </div>
+
         {messages.length >= 1 && (
           <div className="messages-section">
             {messages?.map((message) => {

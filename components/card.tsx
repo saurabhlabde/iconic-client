@@ -4,17 +4,26 @@ import Remove from "../icons/remove";
 
 interface ICard {
   props: {
-    currency: string;
-    rate: string;
+    _id: string;
+    text: string;
+    completed: boolean;
+    createdAt: string;
+    updatedAt: string;
   };
-  onEditClick: (currency: string) => any;
-  onRemoveClick: (currency: string) => any;
+  count: number;
+  onEditClick: (id: string) => any;
+  onRemoveClick: (id: string) => any;
 }
 
-export const Card: FC<ICard> = ({ props, onEditClick, onRemoveClick }) => {
+export const Card: FC<ICard> = ({
+  props,
+  onEditClick,
+  onRemoveClick,
+  count,
+}) => {
   const [hover, setHover] = useState(false);
 
-  const { currency, rate } = props;
+  const { _id: id, text, completed, createdAt, updatedAt } = props;
 
   const hoverHandel = () => {
     setHover(!hover);
@@ -24,17 +33,17 @@ export const Card: FC<ICard> = ({ props, onEditClick, onRemoveClick }) => {
     <>
       <div
         className={`card-section ${hover ? "card-section-hover" : ""}`}
-        id={`id_${currency}`}
+        id={`${id}`}
         onMouseEnter={hoverHandel}
         onMouseLeave={hoverHandel}
       >
         <div className="t-section">
           <div className="text-section ct-sec">
-            <h1 className="c-text">{currency}</h1>
+            <h1 className="c-text">{count + 1}</h1>
           </div>
 
           <div className="text-section rt-sec">
-            <h1 className="r-text">{rate}</h1>
+            <h1 className="r-text">{text}</h1>
           </div>
         </div>
 
@@ -42,7 +51,7 @@ export const Card: FC<ICard> = ({ props, onEditClick, onRemoveClick }) => {
           <div
             className="edit-td-section er-sec"
             onClick={() => {
-              onEditClick ? onEditClick(currency) : undefined;
+              onEditClick ? onEditClick(id) : undefined;
             }}
           >
             <EditIcon />
@@ -51,7 +60,7 @@ export const Card: FC<ICard> = ({ props, onEditClick, onRemoveClick }) => {
           <div
             className="remove-td-section er-sec"
             onClick={() => {
-              onRemoveClick ? onRemoveClick(currency) : undefined;
+              onRemoveClick ? onRemoveClick(id) : undefined;
             }}
           >
             <Remove />

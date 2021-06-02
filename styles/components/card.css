@@ -10,7 +10,6 @@
 .card-section-hover {
   background-color: #200202;
   box-shadow: 0 0 5em #0e0d0d65;
-  transform: translateY(0.1em);
 }
 
 .t-section {
@@ -22,6 +21,10 @@
 }
 
 .c-text {
+  font-size: 1em;
+}
+
+.r-text {
   font-size: 1em;
 }
 

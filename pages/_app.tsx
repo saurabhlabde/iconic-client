@@ -7,8 +7,8 @@ import "../styles/components/message.css";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
 
-const client = new ApolloClient({
-  uri: "https://48p1r2roz4.sse.codesandbox.io",
+export const client = new ApolloClient({
+  uri: "http://localhost:5000/graphql",
   cache: new InMemoryCache(),
 });
 
