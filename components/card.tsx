@@ -41,14 +41,18 @@ export const Card: FC<ICard> = ({ props, onEditClick, onRemoveClick }) => {
         <div className="re-td-section">
           <div
             className="edit-td-section er-sec"
-            onClick={onEditClick ? onEditClick(currency) : undefined}
+            onClick={() => {
+              onEditClick ? onEditClick(currency) : undefined;
+            }}
           >
             <EditIcon />
           </div>
 
           <div
             className="remove-td-section er-sec"
-            onClick={onRemoveClick ? onRemoveClick(currency) : undefined}
+            onClick={() => {
+              onRemoveClick ? onRemoveClick(currency) : undefined;
+            }}
           >
             <Remove />
           </div>

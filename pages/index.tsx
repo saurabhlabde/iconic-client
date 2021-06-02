@@ -26,6 +26,7 @@ const Home = () => {
   const [Data, setData] = useState([]);
   const [currency, setCurrency] = useState("");
   const [rate, setRate] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const { loading, error, data } = useQuery(EXCHANGE_RATES);
 
@@ -58,18 +59,73 @@ const Home = () => {
 
   const addHandel = (e: any) => {
     e.preventDefault();
-    if (rate?.trim() !== "" && currency?.trim() !== "") {
-      const findCurrency = Data?.find((fc) => {
-        return fc.currency === currency;
-      });
 
-      if (!findCurrency) {
-      } else {
-      }
+    if (currency?.trim() === "") {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Currency can't be empty",
+          },
+        ];
+      });
+      return;
+    }
+
+    if (rate?.trim() === "") {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Rate can't be empty",
+          },
+        ];
+      });
+      return;
+    }
+
+    const findCurrency = Data?.find((fc) => {
+      return fc.currency === currency;
+    });
+
+    if (!+rate) {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Rate Must be number",
+          },
+        ];
+      });
+      return;
+    }
+
+    if (!findCurrency) {
+    } else {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Currency already exist",
+          },
+        ];
+      });
     }
   };
 
-  const messageCloseHandel = () => {};
+  const messageCloseHandel = (id: string) => {
+    if (id) {
+      const filterMessages = messages.filter((message) => {
+        return message.id.toString() !== id.toString();
+      });
+
+      setMessages(filterMessages);
+    }
+  };
 
   return (
     <div>
@@ -120,9 +176,20 @@ const Home = () => {
             })}
           </div>
         </div>
-        <div className="messages-section">
-          <MessageCard message="" onClose={messageCloseHandel} />
-        </div>
+        {messages.length >= 1 && (
+          <div className="messages-section">
+            {messages?.map((message) => {
+              return (
+                <MessageCard
+                  key={message.id}
+                  id={message.id}
+                  message={message.message}
+                  onClose={messageCloseHandel}
+                />
+              );
+            })}
+          </div>
+        )}
       </main>
     </div>
   );
