@@ -1,0 +1,15 @@
+.input-section {
+  height: 3em;
+  background-color: aliceblue;
+  width: 100%;
+  margin: 0.8em 0;
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.add-input {
+  height: 100%;
+  width: 100%;
+  font-size: 1em;
+  padding: 1em;
+}

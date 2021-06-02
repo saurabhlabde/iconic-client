@@ -1,0 +1,17 @@
+.button-section {
+  height: 3em;
+  border-radius: 1em;
+  background-color: orange;
+  overflow: hidden;
+  margin: 2em 0;
+}
+
+.button {
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2em;
+  text-transform: capitalize;
+  color: #ffffff;
+}

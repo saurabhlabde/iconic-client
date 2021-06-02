@@ -1,0 +1,62 @@
+*,
+*::after,
+*::before {
+  font-family: "Rubik";
+  font-weight: normal;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+h2 {
+  color: #f1e7e7;
+}
+
+.app-main-section {
+  background-color: #202324;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.app-section {
+  width: 30em;
+}
+
+.heading-section {
+  align-self: flex-start;
+}
+
+.top-heading {
+  font-size: 1.5em;
+  margin: 2em 0 0.5em 0;
+}
+
+.add-input-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cards-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.tc-heading-section {
+  margin-bottom: 1em;
+}
+
+.tc-heading {
+  font-size: 1.5em;
+}

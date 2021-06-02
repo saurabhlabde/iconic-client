@@ -1,0 +1,51 @@
+.card-section {
+  display: flex;
+  background-color: #000000;
+  margin: 0.5em 0;
+  border-radius: 1.2em;
+  padding: 1em 1em 1em 2em;
+  justify-content: space-between;
+}
+
+.card-section-hover {
+  background-color: #200202;
+  box-shadow: 0 0 5em #0e0d0d65;
+  transform: translateY(0.1em);
+}
+
+.t-section {
+  display: flex;
+}
+
+.rt-sec {
+  margin: 0em 1em 0 1.2em;
+}
+
+.c-text {
+  font-size: 1em;
+}
+
+.re-td-section {
+  display: none;
+}
+
+.card-section-hover > .re-td-section {
+  display: flex;
+}
+
+.er-sec {
+  background-color: orange;
+  height: 2em;
+  width: 2em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0.2em;
+  cursor: pointer;
+}
+
+.er-sec > svg {
+  height: 0.8em;
+  width: 0.8em;
+}
