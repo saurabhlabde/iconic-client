@@ -11,6 +11,8 @@ interface IForm {
 }
 
 export const Forms: FC<IForm> = ({ value, onValueChange, onSubmit }) => {
+  const validation = value.length >= 1;
+
   return (
     <>
       <form className="form-add" onSubmit={onSubmit ? onSubmit : undefined}>
@@ -20,7 +22,7 @@ export const Forms: FC<IForm> = ({ value, onValueChange, onSubmit }) => {
           placeHolder={"what's in your mind"}
           onChange={onValueChange}
         />
-        <Button buttonName="add" />
+        <Button buttonName="add" validation={validation} />
       </form>
     </>
   );

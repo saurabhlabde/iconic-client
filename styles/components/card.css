@@ -2,13 +2,16 @@
   display: flex;
   margin: 0.5em 0;
   border-radius: 1.2em;
-  padding: 1em 1em 1em 2em;
+  padding: 0.5em 1em 0.5em 2em;
+  align-items: center;
   justify-content: space-between;
+  min-height: 3.3em;
+  max-height: max-content;
 }
 
 .card-section-hover {
-  background-color: #200202;
-  box-shadow: 0 0 5em #0e0d0d65;
+  background-color: #200202 !important;
+  box-shadow: 0 0 5em #0e0d0d65 !important;
 }
 
 .t-section {
@@ -24,14 +27,18 @@
 }
 
 .r-text {
-  font-size: 1em;
+  font-size: 1.05em;
+}
+
+.r-text > span {
+  display: inline-block;
+}
+
+.r-text > span::first-letter {
+  text-transform: capitalize;
 }
 
 .re-td-section {
-  display: none;
-}
-
-.card-section-hover > .re-td-section {
   display: flex;
 }
 
@@ -50,4 +57,14 @@
 .er-sec > svg {
   height: 0.8em;
   width: 0.8em;
+}
+
+.completed-td-section > svg {
+  height: 1.05em;
+  width: 1.05em;
+  padding-top: 0.1em;
+}
+
+.completed-td-section > svg > path {
+  fill: #ffffff;
 }

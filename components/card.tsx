@@ -52,37 +52,40 @@ export const Card: FC<ICard> = ({
           </div>
 
           <div className="text-section rt-sec">
-            <h1 className="r-text">{text}</h1>
+            <h1 className="r-text">
+              <span>{text}</span>
+            </h1>
           </div>
         </div>
+        {hover && (
+          <div className="re-td-section">
+            <div
+              className="completed-td-section er-sec"
+              onClick={() => {
+                onCompetedClick ? onCompetedClick(id) : undefined;
+              }}
+            >
+              {completed ? <CompetedFillIcon /> : <CompetedIcon />}
+            </div>
+            <div
+              className="edit-td-section er-sec"
+              onClick={() => {
+                onEditClick ? onEditClick(id) : undefined;
+              }}
+            >
+              <EditIcon />
+            </div>
 
-        <div className="re-td-section">
-          <div
-            className="remove-td-section er-sec"
-            onClick={() => {
-              onCompetedClick ? onCompetedClick(id) : undefined;
-            }}
-          >
-            {completed ? <CompetedFillIcon /> : <CompetedIcon />}
+            <div
+              className="remove-td-section er-sec"
+              onClick={() => {
+                onRemoveClick ? onRemoveClick(id) : undefined;
+              }}
+            >
+              <Remove />
+            </div>
           </div>
-          <div
-            className="edit-td-section er-sec"
-            onClick={() => {
-              onEditClick ? onEditClick(id) : undefined;
-            }}
-          >
-            <EditIcon />
-          </div>
-
-          <div
-            className="remove-td-section er-sec"
-            onClick={() => {
-              onRemoveClick ? onRemoveClick(id) : undefined;
-            }}
-          >
-            <Remove />
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

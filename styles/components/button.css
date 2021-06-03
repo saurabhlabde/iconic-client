@@ -14,4 +14,9 @@
   font-size: 1.2em;
   text-transform: capitalize;
   color: #ffffff;
+  cursor: pointer;
+}
+
+.button-disable {
+  background-color: rgba(255, 166, 0, 0.733) !important;
 }
