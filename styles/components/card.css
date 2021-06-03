@@ -28,6 +28,8 @@
 
 .r-text {
   font-size: 1.05em;
+  white-space: pre-wrap;
+  line-break: auto;
 }
 
 .r-text > span {

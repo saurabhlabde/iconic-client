@@ -6,6 +6,7 @@ import { MessageCard } from "../components/message";
 interface IMessage {
   id: string;
   message: string;
+  type: string;
 }
 
 interface IMessages {
@@ -22,6 +23,7 @@ export const Messages: FC<IMessages> = ({ messages, onMessageClose }) => {
             key={message.id}
             id={message.id}
             message={message.message}
+            type={message.type}
             onClose={onMessageClose ? onMessageClose : undefined}
           />
         );

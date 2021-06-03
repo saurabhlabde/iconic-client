@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { useMutation } from "@apollo/client";
-import { nanoid } from "nanoid";
+import { popUpMessage } from "../hooks/message";
 
 // component
 import { Loading } from "../components/loading";
@@ -20,9 +19,6 @@ import { ADD_GQL } from "../gql/add";
 import { UPDATE_GQL } from "../gql/update";
 import { COMPLETE_GQL } from "../gql/completed";
 import { REMOVE_GQL } from "../gql/remove";
-
-// type
-import { ITodoType } from "../types/todo";
 
 // cache
 import { addCache } from "../cache/add";
@@ -147,6 +143,13 @@ const Home = () => {
         type: "add",
         id: null,
       });
+
+      popUpMessage({
+        setMessage: setMessages,
+        message: "Todo update successfully",
+        type: "success",
+      });
+
       if (updateClient) {
         updateCache({
           type: TODOS_GQL,
@@ -161,6 +164,20 @@ const Home = () => {
 
   useEffect(() => {
     if (completedData?.completedTodo) {
+      if (completedData?.completedTodo?.completed) {
+        popUpMessage({
+          setMessage: setMessages,
+          message: "Todo completed remove successfully",
+          type: "success",
+        });
+      } else {
+        popUpMessage({
+          setMessage: setMessages,
+          message: "Todo completed added successfully",
+          type: "success",
+        });
+      }
+
       if (completedClient) {
         completedCache({
           type: TODOS_GQL,
@@ -175,6 +192,11 @@ const Home = () => {
 
   useEffect(() => {
     if (removeData?.removeTodo) {
+      popUpMessage({
+        setMessage: setMessages,
+        message: "Todo remove successfully",
+        type: "success",
+      });
       if (removeClient) {
         removeCache({
           type: TODOS_GQL,
@@ -206,14 +228,10 @@ const Home = () => {
 
     if (valueType.type === "add") {
       if (value?.trim() === "") {
-        setMessages((preMessage) => {
-          return [
-            ...preMessage,
-            {
-              id: nanoid(),
-              message: "Todo can't be empty",
-            },
-          ];
+        popUpMessage({
+          setMessage: setMessages,
+          message: "Todo can't be empty",
+          type: "error",
         });
       } else {
         addTodo();
@@ -224,14 +242,10 @@ const Home = () => {
       if (valueType.id) {
         updateTodo();
       } else {
-        setMessages((preMessage) => {
-          return [
-            ...preMessage,
-            {
-              id: nanoid(),
-              message: "Todo can't be competed",
-            },
-          ];
+        popUpMessage({
+          setMessage: setMessages,
+          message: "Todo can't be competed",
+          type: "error",
         });
       }
     }
@@ -253,14 +267,10 @@ const Home = () => {
         });
       }
     } else {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Todo can't be update",
-          },
-        ];
+      popUpMessage({
+        setMessage: setMessages,
+        message: "Todo can't be update",
+        type: "error",
       });
     }
   };
@@ -281,14 +291,10 @@ const Home = () => {
     if (todoId) {
       completedTodo();
     } else {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Todo can't be competed",
-          },
-        ];
+      popUpMessage({
+        setMessage: setMessages,
+        message: "Todo can't be competed",
+        type: "error",
       });
     }
   };
@@ -326,14 +332,10 @@ const Home = () => {
         message: null,
       });
     } else {
-      setMessages((preMessage) => {
-        return [
-          ...preMessage,
-          {
-            id: nanoid(),
-            message: "Todo can't be update",
-          },
-        ];
+      popUpMessage({
+        setMessage: setMessages,
+        message: "Todo can't be update",
+        type: "error",
       });
     }
   };
