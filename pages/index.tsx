@@ -18,7 +18,7 @@ import { Cards } from "../modules/cards";
 import { Messages } from "../modules/messages";
 
 // type
-import { ITodo } from "../types/todo";
+import { ITodoType } from "../types/todo";
 
 const Home = () => {
   const [hasLoading, setHasLoading] = useState(true);
@@ -86,9 +86,11 @@ const Home = () => {
         _id: toDo._id,
       };
 
-      const updatedTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
-        return todo._id !== toDo._id;
-      });
+      const updatedTodos: Array<ITodoType> = data.todos?.filter(
+        (todo: ITodoType) => {
+          return todo._id !== toDo._id;
+        }
+      );
 
       client.writeQuery({
         query: TODOS_GQL,
@@ -107,9 +109,11 @@ const Home = () => {
 
       const toDo = removeData?.removeTodo;
 
-      const removeTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
-        return todo._id !== toDo._id;
-      });
+      const removeTodos: Array<ITodoType> = data.todos?.filter(
+        (todo: ITodoType) => {
+          return todo._id !== toDo._id;
+        }
+      );
 
       client.writeQuery({
         query: TODOS_GQL,
@@ -137,9 +141,11 @@ const Home = () => {
         _id: toDo._id,
       };
 
-      const completedTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
-        return todo._id !== toDo._id;
-      });
+      const completedTodos: Array<ITodoType> = data.todos?.filter(
+        (todo: ITodoType) => {
+          return todo._id !== toDo._id;
+        }
+      );
 
       client.writeQuery({
         query: TODOS_GQL,
