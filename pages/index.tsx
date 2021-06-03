@@ -8,7 +8,7 @@ import { TODOS_GQL } from "../gql/todos";
 import { TODO_GQL } from "../gql/todo";
 import { ADD_GQL } from "../gql/add";
 import { UPDATE_GQL } from "../gql/update";
-import { COMPLETED_GQL } from "../gql/completed";
+import { COMPLETE_GQL } from "../gql/completed";
 import { REMOVE_GQL } from "../gql/remove";
 
 // component
@@ -23,11 +23,27 @@ interface ITodo {
   text: string;
 }
 
+interface IAddHandel {
+  e?: any;
+  id?: string;
+}
+
 const Home = () => {
   const [hasLoading, setHasLoading] = useState(true);
   const [Data, setData] = useState([]);
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState("");
+  const [valueType, setValueType] = useState({
+    type: "add",
+    id: null,
+  });
+
+  const [confirmPopUp, setConfirmPopUp] = useState({
+    card: false,
+    message: null,
+    buttonText: null,
+    id: null,
+  });
 
   const {
     data: todosData,
@@ -38,7 +54,7 @@ const Home = () => {
   const [addTodo, { data: addedData }] = useMutation(ADD_GQL);
   const [updateTodo, { data: updateData }] = useMutation(UPDATE_GQL);
   const [removeTodo, { data: removeData }] = useMutation(REMOVE_GQL);
-  const [completedTodo, { data: completedDate }] = useMutation(COMPLETED_GQL);
+  const [completedTodo, { data: completedDate }] = useMutation(COMPLETE_GQL);
 
   useEffect(() => {
     if (todosData?.todos) {
@@ -53,10 +69,10 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (removeData?.removeTodo) {
+    if (removeData?.removeTodo || completedDate?.completedTodo) {
       location.reload();
     }
-  }, [removeData]);
+  }, [removeData, completedDate]);
 
   useEffect(() => {
     if (addedData?.addTodo) {
@@ -65,6 +81,16 @@ const Home = () => {
     }
   }, [addedData]);
 
+  useEffect(() => {
+    if (updateData?.updateTodo) {
+      setValue("");
+      setValueType({
+        type: "add",
+        id: null,
+      });
+    }
+  }, [updateData]);
+
   if (hasLoading) return <Loading />;
 
   const valueChangeHandel = (e: any): void => {
@@ -72,38 +98,152 @@ const Home = () => {
     setValue(val);
   };
 
-  const addHandel = (e: any) => {
-    e.preventDefault();
+  // add  todo
 
-    if (value?.trim() === "") {
+  const addHandel = ({ e }: IAddHandel) => {
+    e?.preventDefault();
+
+    if (valueType.type === "add") {
+      if (value?.trim() === "") {
+        setMessages((preMessage) => {
+          return [
+            ...preMessage,
+            {
+              id: nanoid(),
+              message: "Todo can't be empty",
+            },
+          ];
+        });
+      }
+
+      addTodo({
+        variables: {
+          text: value,
+        },
+      });
+    }
+
+    if (valueType.type === "update") {
+      if (valueType.id) {
+        updateTodo({
+          variables: {
+            id: valueType.id,
+            text: value,
+          },
+        });
+      } else {
+        setMessages((preMessage) => {
+          return [
+            ...preMessage,
+            {
+              id: nanoid(),
+              message: "Todo can't be competed",
+            },
+          ];
+        });
+      }
+    }
+  };
+
+  // edit todo
+
+  const editHandel = (id: string) => {
+    if (id) {
+      const findTodo = Data.find((todo) => {
+        return todo._id === id;
+      });
+
+      if (findTodo) {
+        setValue(findTodo.text);
+        setValueType({
+          type: "update",
+          id,
+        });
+      }
+    } else {
       setMessages((preMessage) => {
         return [
           ...preMessage,
           {
             id: nanoid(),
-            message: "Todo can't be empty",
+            message: "Todo can't be update",
           },
         ];
       });
     }
+  };
 
-    addTodo({
-      variables: {
-        text: value,
-      },
+  // remove todo
+
+  const removeHandel = (id: string) => {
+    setConfirmPopUp({
+      card: true,
+      message: "You are want to delete this todo",
+      buttonText: "Remove",
+      id: id,
     });
   };
 
-  const editHandel = (id: string) => {};
+  // competed todo
 
-  const removeHandel = (id: string) => {
-    console.log(id, "id");
-
+  const competedHandel = (id: string) => {
     if (id) {
-      removeTodo({
+      completedTodo({
         variables: {
           id: id,
         },
+      });
+    } else {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Todo can't be competed",
+          },
+        ];
+      });
+    }
+  };
+
+  // message close todo
+
+  const messageCloseHandel = (id: string) => {
+    if (id) {
+      const filterMessages = messages.filter((message) => {
+        return message.id.toString() !== id.toString();
+      });
+
+      setMessages(filterMessages);
+    }
+  };
+
+  // confrim pop up message todo
+
+  const confirmCancelHandel = () => {
+    setConfirmPopUp({
+      card: false,
+      buttonText: null,
+      message: null,
+      id: null,
+    });
+  };
+
+  // confirm remove todo
+
+  const confirmRemoveHandel = () => {
+    if (confirmPopUp.id) {
+      removeTodo({
+        variables: {
+          id: confirmPopUp.id,
+        },
+      });
+
+      setConfirmPopUp({
+        card: false,
+        buttonText: null,
+        message: null,
+        id: null,
       });
     } else {
       setMessages((preMessage) => {
@@ -118,15 +258,7 @@ const Home = () => {
     }
   };
 
-  const messageCloseHandel = (id: string) => {
-    if (id) {
-      const filterMessages = messages.filter((message) => {
-        return message.id.toString() !== id.toString();
-      });
-
-      setMessages(filterMessages);
-    }
-  };
+  // length
 
   const dataLength = Data.length >= 1;
   const messageLength = messages.length >= 1;
@@ -149,7 +281,9 @@ const Home = () => {
             <Forms
               value={value}
               onValueChange={valueChangeHandel}
-              onSubmit={addHandel}
+              onSubmit={(e: any) => {
+                addHandel({ e });
+              }}
             />
           </div>
 
@@ -163,6 +297,7 @@ const Home = () => {
                 props={Data}
                 onEditClick={editHandel}
                 onRemoveClick={removeHandel}
+                onCompetedClick={competedHandel}
               />
             </div>
           )}
@@ -173,12 +308,14 @@ const Home = () => {
             <Messages messages={messages} onMessageClose={messageCloseHandel} />
           </div>
         )}
-        {/* <ConfirmCard
-          message={"You want to remove this todo"}
-          confirmButtonText="Remove"
-          onCancel={() => {}}
-          onConfirm={() => {}}
-        /> */}
+        {confirmPopUp.card && (
+          <ConfirmCard
+            message={confirmPopUp.message}
+            confirmButtonText={confirmPopUp.buttonText}
+            onCancel={confirmCancelHandel}
+            onConfirm={confirmRemoveHandel}
+          />
+        )}
       </main>
     </div>
   );

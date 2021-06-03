@@ -28,4 +28,5 @@ function Remove({
 }
 
 const RemoveIcon = React.memo(Remove);
+
 export default RemoveIcon;

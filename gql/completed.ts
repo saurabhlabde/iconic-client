@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-export const COMPLETED_GQL = gql`
+export const COMPLETE_GQL = gql`
   mutation CompletedTodo($id: String!) {
     completedTodo(completed: { id: $id }) {
       _id

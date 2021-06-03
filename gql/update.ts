@@ -1,8 +1,8 @@
 import gql from "graphql-tag";
 
 export const UPDATE_GQL = gql`
-  mutation UpdateTodos($id: String!, $text: String!) {
-    updateTodos(update: { id: $id, text: $text }) {
+  mutation UpdateTodo($id: String!, $text: String!) {
+    updateTodo(update: { id: $id, text: $text }) {
       _id
       text
       completed

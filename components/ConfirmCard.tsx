@@ -18,8 +18,11 @@ export const ConfirmCard: FC<IConfirmCard> = ({
       <div className="confirm-card">
         <div className="confirm-card-section">
           <div className="confirm-text-section">
-            <h1 className="confirm-text">{message}</h1>
+            <h1 className="confirm-text">
+              {message ? message : "You are sure"}
+            </h1>
           </div>
+
           <div className="cc-button-section">
             <div className="cancel-button-section cc-btn-sec">
               <button
@@ -29,12 +32,13 @@ export const ConfirmCard: FC<IConfirmCard> = ({
                 Cancel
               </button>
             </div>
+
             <div className="confirm-button-section cc-btn-sec">
               <button
                 className="comfirm-button cc-btn"
                 onClick={onConfirm ? onConfirm : undefined}
               >
-                {confirmButtonText}
+                {confirmButtonText ? confirmButtonText : "Confirm"}
               </button>
             </div>
           </div>

@@ -1,6 +1,8 @@
 import { FC, useState } from "react";
 import EditIcon from "../icons/edit";
 import Remove from "../icons/remove";
+import CompetedIcon from "../icons/competed";
+import CompetedFillIcon from "../icons/competedFill";
 
 interface ICard {
   props: {
@@ -13,12 +15,14 @@ interface ICard {
   count: number;
   onEditClick: (id: string) => any;
   onRemoveClick: (id: string) => any;
+  onCompetedClick: (id: string) => any;
 }
 
 export const Card: FC<ICard> = ({
   props,
   onEditClick,
   onRemoveClick,
+  onCompetedClick,
   count,
 }) => {
   const [hover, setHover] = useState(false);
@@ -33,6 +37,7 @@ export const Card: FC<ICard> = ({
     <>
       <div
         className={`card-section ${hover ? "card-section-hover" : ""}`}
+        style={{ backgroundColor: completed ? "#ffe60284" : "#000000" }}
         id={`${id}`}
         onMouseEnter={hoverHandel}
         onMouseLeave={hoverHandel}
@@ -48,6 +53,14 @@ export const Card: FC<ICard> = ({
         </div>
 
         <div className="re-td-section">
+          <div
+            className="remove-td-section er-sec"
+            onClick={() => {
+              onCompetedClick ? onCompetedClick(id) : undefined;
+            }}
+          >
+            {completed ? <CompetedFillIcon /> : <CompetedIcon />}
+          </div>
           <div
             className="edit-td-section er-sec"
             onClick={() => {

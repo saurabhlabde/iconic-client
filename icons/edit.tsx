@@ -41,4 +41,5 @@ const Edit = ({
 };
 
 const EditIcon = React.memo(Edit);
+
 export default EditIcon;
