@@ -59,6 +59,7 @@ export const Card: FC<ICard> = ({
             </h1>
           </div>
         </div>
+
         {hover && (
           <div className="re-td-section">
             <div

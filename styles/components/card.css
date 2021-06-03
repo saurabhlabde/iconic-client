@@ -7,6 +7,7 @@
   justify-content: space-between;
   min-height: 3.3em;
   max-height: max-content;
+  position: relative;
 }
 
 .card-section-hover {
@@ -42,6 +43,11 @@
 
 .re-td-section {
   display: flex;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(-5%, -50%);
+  z-index: 1;
 }
 
 .er-sec {
@@ -62,9 +68,8 @@
 }
 
 .completed-td-section > svg {
-  height: 1.05em;
-  width: 1.05em;
-  padding-top: 0.1em;
+  height: 1.1em;
+  width: 1.1em;
 }
 
 .completed-td-section > svg > path {
