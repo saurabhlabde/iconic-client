@@ -1,10 +1,19 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
+
+// gql
 import { TODOS_GQL } from "../gql/todos";
+import { TODO_GQL } from "../gql/todo";
+import { ADD_GQL } from "../gql/add";
+import { UPDATE_GQL } from "../gql/update";
+import { COMPLETED_GQL } from "../gql/completed";
+import { REMOVE_GQL } from "../gql/remove";
 
 // component
+import { Loading } from "../components/loading";
+import { ConfirmCard } from "../components/ConfirmCard";
 import { Forms } from "../modules/form";
 import { Cards } from "../modules/cards";
 import { Messages } from "../modules/messages";
@@ -15,9 +24,10 @@ interface ITodo {
 }
 
 const Home = () => {
+  const [hasLoading, setHasLoading] = useState(true);
   const [Data, setData] = useState([]);
-  const [value, setValue] = useState("");
   const [messages, setMessages] = useState([]);
+  const [value, setValue] = useState("");
 
   const {
     data: todosData,
@@ -25,23 +35,42 @@ const Home = () => {
     error: todosError,
   } = useQuery(TODOS_GQL);
 
+  const [addTodo, { data: addedData }] = useMutation(ADD_GQL);
+  const [updateTodo, { data: updateData }] = useMutation(UPDATE_GQL);
+  const [removeTodo, { data: removeData }] = useMutation(REMOVE_GQL);
+  const [completedTodo, { data: completedDate }] = useMutation(COMPLETED_GQL);
+
   useEffect(() => {
     if (todosData?.todos) {
       setData(todosData.todos);
     }
   }, [todosData]);
 
-  if (todosLoading) return <h1>Loding...</h1>;
-  if (todosError) return <h1>Error :[ </h1>;
+  useEffect(() => {
+    setTimeout(() => {
+      setHasLoading(false);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    if (removeData?.removeTodo) {
+      location.reload();
+    }
+  }, [removeData]);
+
+  useEffect(() => {
+    if (addedData?.addTodo) {
+      setValue("");
+      location.reload();
+    }
+  }, [addedData]);
+
+  if (hasLoading) return <Loading />;
 
   const valueChangeHandel = (e: any): void => {
     const val: string = e.target.value;
     setValue(val);
   };
-
-  const editHandel = (id: string) => {};
-
-  const removeHandel = (id: string) => {};
 
   const addHandel = (e: any) => {
     e.preventDefault();
@@ -56,7 +85,36 @@ const Home = () => {
           },
         ];
       });
-      return;
+    }
+
+    addTodo({
+      variables: {
+        text: value,
+      },
+    });
+  };
+
+  const editHandel = (id: string) => {};
+
+  const removeHandel = (id: string) => {
+    console.log(id, "id");
+
+    if (id) {
+      removeTodo({
+        variables: {
+          id: id,
+        },
+      });
+    } else {
+      setMessages((preMessage) => {
+        return [
+          ...preMessage,
+          {
+            id: nanoid(),
+            message: "Todo can't be update",
+          },
+        ];
+      });
     }
   };
 
@@ -110,7 +168,17 @@ const Home = () => {
           )}
         </div>
 
-        {messageLength && <div className="messages-section"></div>}
+        {messageLength && (
+          <div className="messages-section">
+            <Messages messages={messages} onMessageClose={messageCloseHandel} />
+          </div>
+        )}
+        {/* <ConfirmCard
+          message={"You want to remove this todo"}
+          confirmButtonText="Remove"
+          onCancel={() => {}}
+          onConfirm={() => {}}
+        /> */}
       </main>
     </div>
   );

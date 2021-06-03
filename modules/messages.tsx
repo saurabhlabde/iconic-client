@@ -10,7 +10,7 @@ interface IMessage {
 
 interface IMessages {
   messages: Array<IMessage>;
-  onMessageClose: () => void;
+  onMessageClose: (id: string) => void;
 }
 
 export const Messages: FC<IMessages> = ({ messages, onMessageClose }) => {

@@ -3,6 +3,8 @@ import "../styles/components/input.css";
 import "../styles/components/button.css";
 import "../styles/components/card.css";
 import "../styles/components/message.css";
+import "../styles/components/loading.css";
+import "../styles/components/confirmCard.css";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";

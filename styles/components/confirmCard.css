@@ -1,0 +1,62 @@
+.confirm-card {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.confirm-card-section {
+  background-color: rgba(56, 51, 51, 0.657);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1em 2em;
+  border-radius: 1em;
+}
+
+.confirm-text-section {
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-text {
+  font-size: 1em;
+}
+
+.cc-button-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1.2em 0 0.2em 0;
+}
+
+.cc-btn-sec {
+  height: 2.3em;
+  width: auto;
+  margin: 0 0.5em;
+}
+
+.cc-btn {
+  height: 100%;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  font-size: 0.9em;
+  color: #ffffff;
+  padding: 0.6em 2em 0.5em 2em;
+}
+
+.cancel-button-section {
+  background-color: orange;
+  border-radius: 0.8em;
+}
+
+.confirm-button-section {
+  background-color: red;
+  border-radius: 0.8em;
+}
