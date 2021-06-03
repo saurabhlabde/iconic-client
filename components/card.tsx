@@ -29,8 +29,12 @@ export const Card: FC<ICard> = ({
 
   const { _id: id, text, completed, createdAt, updatedAt } = props;
 
-  const hoverHandel = () => {
-    setHover(!hover);
+  const hoverInHandel = () => {
+    setHover(true);
+  };
+
+  const hoverOutHandel = () => {
+    setHover(false);
   };
 
   return (
@@ -39,8 +43,8 @@ export const Card: FC<ICard> = ({
         className={`card-section ${hover ? "card-section-hover" : ""}`}
         style={{ backgroundColor: completed ? "#ffe60284" : "#000000" }}
         id={`${id}`}
-        onMouseEnter={hoverHandel}
-        onMouseLeave={hoverHandel}
+        onMouseEnter={hoverInHandel}
+        onMouseLeave={hoverOutHandel}
       >
         <div className="t-section">
           <div className="text-section ct-sec">

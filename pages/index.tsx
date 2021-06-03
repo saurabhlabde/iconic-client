@@ -17,15 +17,8 @@ import { Forms } from "../modules/form";
 import { Cards } from "../modules/cards";
 import { Messages } from "../modules/messages";
 
-interface ITodo {
-  id: string;
-  text: string;
-}
-
-interface IAddHandel {
-  e?: any;
-  id?: string;
-}
+// type
+import { ITodo } from "../types/todo";
 
 const Home = () => {
   const [hasLoading, setHasLoading] = useState(true);
@@ -56,29 +49,106 @@ const Home = () => {
         query: TODOS_GQL,
       });
 
-      const createTodo = addData?.addTodo;
+      const toDo = addData?.addTodo;
 
-      let typeName = {
-        completed: createTodo.completed,
-        createdAt: createTodo.createdAt,
-        text: createTodo.text,
-        updateAt: createTodo.updateAt,
+      let addedTodo = {
+        completed: toDo.completed,
+        createdAt: toDo.createdAt,
+        text: toDo.text,
+        updateAt: toDo.updateAt,
         __typename: "Todo",
-        _id: createTodo._id,
+        _id: toDo._id,
       };
 
       client.writeQuery({
         query: TODOS_GQL,
         data: {
-          todos: [typeName, ...data.todos],
+          todos: [addedTodo, ...data.todos],
         },
       });
     },
   });
 
-  const [updateTodo, { data: updateData }] = useMutation(UPDATE_GQL);
-  const [removeTodo, { data: removeData }] = useMutation(REMOVE_GQL);
-  const [completedTodo, { data: completedDate }] = useMutation(COMPLETE_GQL);
+  const [updateTodo, { data: updateData }] = useMutation(UPDATE_GQL, {
+    update(client, { data: updateData }) {
+      const data: any = client.readQuery({
+        query: TODOS_GQL,
+      });
+
+      const toDo = updateData?.updateTodo;
+
+      let updatedTodo = {
+        completed: toDo.completed,
+        createdAt: toDo.createdAt,
+        text: toDo.text,
+        updateAt: toDo.updateAt,
+        __typename: "Todo",
+        _id: toDo._id,
+      };
+
+      const updatedTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
+        return todo._id !== toDo._id;
+      });
+
+      client.writeQuery({
+        query: TODOS_GQL,
+        data: {
+          todos: [updatedTodo, ...updatedTodos],
+        },
+      });
+    },
+  });
+
+  const [removeTodo] = useMutation(REMOVE_GQL, {
+    update(client, { data: removeData }) {
+      const data: any = client.readQuery({
+        query: TODOS_GQL,
+      });
+
+      const toDo = removeData?.removeTodo;
+
+      const removeTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
+        return todo._id !== toDo._id;
+      });
+
+      client.writeQuery({
+        query: TODOS_GQL,
+        data: {
+          todos: [...removeTodos],
+        },
+      });
+    },
+  });
+
+  const [completedTodo] = useMutation(COMPLETE_GQL, {
+    update(client, { data: completedData }) {
+      const data: any = client.readQuery({
+        query: TODOS_GQL,
+      });
+
+      const toDo = completedData?.completedTodo;
+
+      let completedTodo = {
+        completed: toDo.completed,
+        createdAt: toDo.createdAt,
+        text: toDo.text,
+        updateAt: toDo.updateAt,
+        __typename: "Todo",
+        _id: toDo._id,
+      };
+
+      const completedTodos: Array<ITodo> = data.todos?.filter((todo: ITodo) => {
+        return todo._id !== toDo._id;
+      });
+
+      client.writeQuery({
+        query: TODOS_GQL,
+        data: {
+          todos: [completedTodo, ...completedTodos],
+        },
+      });
+    },
+  });
 
   useEffect(() => {
     if (todosData?.todos) {
@@ -117,7 +187,7 @@ const Home = () => {
 
   // add  todo
 
-  const addHandel = ({ e }: IAddHandel) => {
+  const addHandel = (e: any) => {
     e?.preventDefault();
 
     if (valueType.type === "add") {
@@ -298,9 +368,7 @@ const Home = () => {
             <Forms
               value={value}
               onValueChange={valueChangeHandel}
-              onSubmit={(e: any) => {
-                addHandel({ e });
-              }}
+              onSubmit={addHandel ? addHandel : undefined}
             />
           </div>
 
