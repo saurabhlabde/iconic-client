@@ -5,7 +5,6 @@ import { useQuery, useMutation } from "@apollo/client";
 
 // gql
 import { TODOS_GQL } from "../gql/todos";
-import { TODO_GQL } from "../gql/todo";
 import { ADD_GQL } from "../gql/add";
 import { UPDATE_GQL } from "../gql/update";
 import { COMPLETE_GQL } from "../gql/completed";
@@ -51,7 +50,32 @@ const Home = () => {
     error: todosError,
   } = useQuery(TODOS_GQL);
 
-  const [addTodo, { data: addedData }] = useMutation(ADD_GQL);
+  const [addTodo, { data: addedData }] = useMutation(ADD_GQL, {
+    update(client, { data: addData }) {
+      const data: any = client.readQuery({
+        query: TODOS_GQL,
+      });
+
+      const createTodo = addData?.addTodo;
+
+      let typeName = {
+        completed: createTodo.completed,
+        createdAt: createTodo.createdAt,
+        text: createTodo.text,
+        updateAt: createTodo.updateAt,
+        __typename: "Todo",
+        _id: createTodo._id,
+      };
+
+      client.writeQuery({
+        query: TODOS_GQL,
+        data: {
+          todos: [typeName, ...data.todos],
+        },
+      });
+    },
+  });
+
   const [updateTodo, { data: updateData }] = useMutation(UPDATE_GQL);
   const [removeTodo, { data: removeData }] = useMutation(REMOVE_GQL);
   const [completedTodo, { data: completedDate }] = useMutation(COMPLETE_GQL);
@@ -69,15 +93,8 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    if (removeData?.removeTodo || completedDate?.completedTodo) {
-      location.reload();
-    }
-  }, [removeData, completedDate]);
-
-  useEffect(() => {
     if (addedData?.addTodo) {
       setValue("");
-      location.reload();
     }
   }, [addedData]);
 
