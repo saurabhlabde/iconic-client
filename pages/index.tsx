@@ -1,15 +1,13 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import { client } from "./_app";
 import { useQuery } from "@apollo/client";
 import { TODOS_GQL } from "../gql/todos";
 
 // component
-import { Input } from "../components/input";
-import { Button } from "../components/button";
-import { Card } from "../components/card";
-import { MessageCard } from "../components/message";
+import { Forms } from "../modules/form";
+import { Cards } from "../modules/cards";
+import { Messages } from "../modules/messages";
 
 interface ITodo {
   id: string;
@@ -41,9 +39,9 @@ const Home = () => {
     setValue(val);
   };
 
-  const editClickHandel = (id: string) => {};
+  const editHandel = (id: string) => {};
 
-  const removeClickHandel = (id: string) => {};
+  const removeHandel = (id: string) => {};
 
   const addHandel = (e: any) => {
     e.preventDefault();
@@ -60,10 +58,6 @@ const Home = () => {
       });
       return;
     }
-
-    // setCurrency("");
-    // setRate("");
-    // setMessages([]);
   };
 
   const messageCloseHandel = (id: string) => {
@@ -75,6 +69,9 @@ const Home = () => {
       setMessages(filterMessages);
     }
   };
+
+  const dataLength = Data.length >= 1;
+  const messageLength = messages.length >= 1;
 
   return (
     <div>
@@ -91,49 +88,29 @@ const Home = () => {
           </div>
 
           <div className="add-input-section">
-            <form className="form-add" onSubmit={addHandel}>
-              <Input
-                value={value}
-                inputName="value"
-                placeHolder={"Add what's in your mind"}
-                onChange={valueChangeHandel}
-              />
-              <Button buttonName="add" />
-            </form>
+            <Forms
+              value={value}
+              onValueChange={valueChangeHandel}
+              onSubmit={addHandel}
+            />
           </div>
 
-          <div className="cards-section">
-            <div className="tc-heading-section">
-              <h1 className="tc-heading">Added todo</h1>
+          {dataLength && (
+            <div className="cards-section">
+              <div className="tc-heading-section">
+                <h1 className="tc-heading">Added todo</h1>
+              </div>
+
+              <Cards
+                props={Data}
+                onEditClick={editHandel}
+                onRemoveClick={removeHandel}
+              />
             </div>
-            {Data?.map((val, i) => {
-              return (
-                <Card
-                  key={i}
-                  props={val}
-                  count={i}
-                  onEditClick={editClickHandel}
-                  onRemoveClick={removeClickHandel}
-                />
-              );
-            })}
-          </div>
+          )}
         </div>
 
-        {messages.length >= 1 && (
-          <div className="messages-section">
-            {messages?.map((message) => {
-              return (
-                <MessageCard
-                  key={message.id}
-                  id={message.id}
-                  message={message.message}
-                  onClose={messageCloseHandel}
-                />
-              );
-            })}
-          </div>
-        )}
+        {messageLength && <div className="messages-section"></div>}
       </main>
     </div>
   );
