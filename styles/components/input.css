@@ -5,6 +5,7 @@
   margin: 0.8em 0;
   border-radius: 1em;
   overflow: hidden;
+  position: relative;
 }
 
 .add-input {
@@ -12,4 +13,25 @@
   width: 100%;
   font-size: 1em;
   padding: 1em;
+}
+
+.text-clear-section {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(-30%, -50%);
+  background-color: rgba(255, 124, 1, 0.705);
+  z-index: 1;
+  height: 1.6em;
+  width: 1.6em;
+  border-radius: 5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.text-clear-section > svg {
+  height: 0.7em;
+  width: 0.7em;
 }

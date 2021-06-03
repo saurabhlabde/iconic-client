@@ -8,9 +8,15 @@ interface IForm {
   value: string;
   onValueChange: any;
   onSubmit: (e: any) => void;
+  onClear: () => void;
 }
 
-export const Forms: FC<IForm> = ({ value, onValueChange, onSubmit }) => {
+export const Forms: FC<IForm> = ({
+  value,
+  onValueChange,
+  onSubmit,
+  onClear,
+}) => {
   const validation = value.length >= 1;
 
   return (
@@ -21,6 +27,7 @@ export const Forms: FC<IForm> = ({ value, onValueChange, onSubmit }) => {
           inputName="value"
           placeHolder={"what's in your mind"}
           onChange={onValueChange}
+          onClear={onClear}
         />
         <Button buttonName="add" validation={validation} />
       </form>

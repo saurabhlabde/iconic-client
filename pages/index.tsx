@@ -341,6 +341,12 @@ const Home = () => {
     }
   };
 
+  // clear value
+
+  const clearHandel = () => {
+    setValue("");
+  };
+
   // length
 
   const dataLength = Data.length >= 1;
@@ -364,7 +370,8 @@ const Home = () => {
             <Forms
               value={value}
               onValueChange={valueChangeHandel}
-              onSubmit={addHandel ? addHandel : undefined}
+              onClear={clearHandel}
+              onSubmit={addHandel}
             />
           </div>
 
