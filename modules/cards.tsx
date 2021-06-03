@@ -8,9 +8,10 @@ import { ITodo } from "../types/todo";
 
 interface ICards {
   props: Array<ITodo>;
-  onEditClick: (id: string) => void;
-  onRemoveClick: (id: string) => void;
-  onCompetedClick: (id: string) => void;
+  setId: any;
+  onEditClick: () => void;
+  onRemoveClick: () => void;
+  onCompetedClick: () => void;
 }
 
 export const Cards: FC<ICards> = ({
@@ -18,6 +19,7 @@ export const Cards: FC<ICards> = ({
   onEditClick,
   onRemoveClick,
   onCompetedClick,
+  setId,
 }) => {
   return (
     <>
@@ -30,6 +32,7 @@ export const Cards: FC<ICards> = ({
             onCompetedClick={onCompetedClick}
             onEditClick={onEditClick ? onEditClick : undefined}
             onRemoveClick={onRemoveClick ? onRemoveClick : undefined}
+            setId={setId}
           />
         );
       })}

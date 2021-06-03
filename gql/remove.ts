@@ -7,7 +7,7 @@ mutation RemoveTodo($id:String!){
     text
     completed
     createdAt
-    updateAt
+    updatedAt
   }
 }
 `;

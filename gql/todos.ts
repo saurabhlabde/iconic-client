@@ -7,7 +7,7 @@ export const TODOS_GQL = gql`
       text
       completed
       createdAt
-      updateAt
+      updatedAt
     }
   }
 `;

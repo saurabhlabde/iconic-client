@@ -7,7 +7,7 @@ export const UPDATE_GQL = gql`
       text
       completed
       createdAt
-      updateAt
+      updatedAt
     }
   }
 `;

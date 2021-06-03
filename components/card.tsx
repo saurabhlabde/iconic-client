@@ -13,9 +13,10 @@ interface ICard {
     updatedAt: string;
   };
   count: number;
-  onEditClick: (id: string) => any;
-  onRemoveClick: (id: string) => any;
-  onCompetedClick: (id: string) => any;
+  setId: any;
+  onEditClick: () => void;
+  onRemoveClick: () => void;
+  onCompetedClick: () => void;
 }
 
 export const Card: FC<ICard> = ({
@@ -24,6 +25,7 @@ export const Card: FC<ICard> = ({
   onRemoveClick,
   onCompetedClick,
   count,
+  setId,
 }) => {
   const [hover, setHover] = useState(false);
 
@@ -62,7 +64,8 @@ export const Card: FC<ICard> = ({
             <div
               className="completed-td-section er-sec"
               onClick={() => {
-                onCompetedClick ? onCompetedClick(id) : undefined;
+                setId(id);
+                onCompetedClick ? onCompetedClick() : undefined;
               }}
             >
               {completed ? <CompetedFillIcon /> : <CompetedIcon />}
@@ -70,7 +73,8 @@ export const Card: FC<ICard> = ({
             <div
               className="edit-td-section er-sec"
               onClick={() => {
-                onEditClick ? onEditClick(id) : undefined;
+                setId(id);
+                onEditClick ? onEditClick() : undefined;
               }}
             >
               <EditIcon />
@@ -79,7 +83,8 @@ export const Card: FC<ICard> = ({
             <div
               className="remove-td-section er-sec"
               onClick={() => {
-                onRemoveClick ? onRemoveClick(id) : undefined;
+                setId(id);
+                onRemoveClick ? onRemoveClick() : undefined;
               }}
             >
               <Remove />
