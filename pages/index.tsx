@@ -8,7 +8,6 @@ import { Loading } from "../components/loading";
 import { Forms } from "../modules/form";
 import { Cards } from "../modules/cards";
 import { Messages } from "../modules/messages";
-import Menu from "../components/menu";
 
 // hooks
 import { mutation } from "../hooks/mutation";
